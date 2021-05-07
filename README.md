@@ -1,13 +1,18 @@
+# Cheevo
+
+WIP
+
+The following structure is needed
+```
 [
     {
         "game": "Terraria",
         "title": "Completionist!",
         "text": "All the trophies have been earned.",
         "rarity": 2.09,
-        "type": 4,
-        "earned": "2021-05-06T02:47:22.973Z",
-        "rating": 0,
-        "comment": ""
+        "type": "Platinum",
+        "earned": "2021-01-01T00:00:00.000Z",
+        "count": 1337,
     }
 ]
-
+```

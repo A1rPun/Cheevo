@@ -7,13 +7,19 @@ if (fs.existsSync(cheevoFile)) {
   cheevos = JSON.parse(json);
 }
 
+cheevos = cheevos.filter(x => x.type === 'Platinum');
 const cheevo = cheevos[Math.floor(Math.random() * cheevos.length)];
 
 if (cheevo) {
-  const cheevoInfo = `${prettyType(cheevo.type)} ${cheevo.title}\n${cheevo.game} - ${cheevo.text}\n${cheevo.earned}\n${prettyRarity(cheevo.rarity)} ${cheevo.rarity}%`;
+  const cheevoInfo = `
+Earned a ${prettyType(cheevo.type)} in ${cheevo.game}
+${cheevo.title} - ${cheevo.text}
+#${cheevo.count} - ${cheevo.earned}
+${prettyRarity(cheevo.rarity)} ${cheevo.rarity}%
+`;
   console.log(cheevoInfo);
 } else {
-  console.log('No cheevo data file.');
+  console.log(`No cheevo data file in "${cheevoFile}".`);
 }
 
 function prettyRarity(n) {
@@ -25,13 +31,5 @@ function prettyRarity(n) {
 }
 
 function prettyType(type) {
-  switch(type) {
-    case 1: return 'Bronze';
-    case 2: return 'Silver';
-    case 3: return 'Gold';
-    case 4: return 'Platinum';
-    default:
-      return 'Cheevo';
-  }
+  return type ? `${type} trophy` : 'cheevo';
 }
-
