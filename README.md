@@ -3,16 +3,44 @@
 WIP
 
 The following structure is needed
+
+### Playstation trophies.json
+
 ```
-[
-    {
-        "game": "Terraria",
-        "title": "Completionist!",
-        "text": "All the trophies have been earned.",
-        "rarity": 2.09,
-        "type": "Platinum",
-        "earned": "2021-01-01T00:00:00.000Z",
-        "count": 1337,
-    }
-]
+[{
+    "trophy_id": "",
+    "game_id": "",
+    "title": "",
+    "text": "",
+    "game": "",
+    "type": "Platinum|Gold|Silver|Bronze",
+    "earned": "",
+    "rarity": 13.37
+}]
+```
+
+### Steam cheevos.json
+
+```
+[{
+    "cheevo_id": "",
+    "game_id": "",
+    "title": "",
+    "text": "",
+    "game": ""
+}]
+```
+
+### Xbox xboxCheevos.json
+
+```
+[{
+    "xbox_cheevo_id":"",
+    "game_id":"",
+    "title":"",
+    "text":"",
+    "game":"",
+    "type":"100",
+    "earned":""
+}]
 ```
