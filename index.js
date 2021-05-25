@@ -32,14 +32,17 @@ function readFiles(...files) {
     });
     return acc;
   }, {});
-  cheevoData.total = Object.values(cheevoData).reduce((acc, cur) => {
-    acc.cheevos = [...acc.cheevos, ...cur.cheevos];
-    acc.gameCount += cur.gameCount;
-    return acc;
-  }, {
-    cheevos: [],
-    gameCount: 0,
-  });
+  cheevoData.total = Object.values(cheevoData).reduce(
+    (acc, cur) => {
+      acc.cheevos = [...acc.cheevos, ...cur.cheevos];
+      acc.gameCount += cur.gameCount;
+      return acc;
+    },
+    {
+      cheevos: [],
+      gameCount: 0,
+    }
+  );
   return cheevoData;
 }
 
@@ -51,18 +54,12 @@ function getCheevoInfo(cheevos, cheevoData) {
   if (cheevoData[cheevoFile].cheevos.length)
     cheevoInfo += `\nSteam: ${cheevoData[cheevoFile].cheevos.length} cheevos in ${cheevoData[cheevoFile].gameCount} games`;
 
-  if (cheevoData[xboxCheevoFile].cheevos.length) {
-    // const xboxCheevoGamerScore = xboxCheevos.reduce(
-    //   (acc, cur) => acc + parseInt(cur.type, 10),
-    //   0
-    // );
-    cheevoInfo += `\nXbox: ${cheevoData[xboxCheevoFile].cheevos.length} cheevos in ${cheevoData[xboxCheevoFile].gameCount} games worth ${785} Gamerscore`;
-  }
+  if (cheevoData[xboxCheevoFile].cheevos.length)
+    cheevoInfo += `\nXbox: ${cheevoData[xboxCheevoFile].cheevos.length} cheevos in ${cheevoData[xboxCheevoFile].gameCount} games`;
 
-  if (cheevoData[trophyFile].cheevos.length) {
-    cheevoInfo += `\nPSN:`;
-    cheevoInfo += ` ${cheevoData[trophyFile].cheevos.length} trophies in ${cheevoData[trophyFile].gameCount} games`;
-  }
+  if (cheevoData[trophyFile].cheevos.length)
+    cheevoInfo += `\nPSN: ${cheevoData[trophyFile].cheevos.length} trophies in ${cheevoData[trophyFile].gameCount} games`;
+
   return cheevoInfo + `\n`;
 }
 
