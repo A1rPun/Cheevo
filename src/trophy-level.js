@@ -25,4 +25,4 @@ function getTrophyLevelProgression(points) {
   return [level, percent];
 }
 
-module.exports = getTrophyLevelProgression;
+export default getTrophyLevelProgression;

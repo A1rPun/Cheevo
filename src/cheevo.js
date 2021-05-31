@@ -1,14 +1,17 @@
-import { checkFile, logCheevo } from './helpers.js';
+import {
+  checkFile,
+  logCheevos,
+  logCheevoDetails,
+  logCheevoExtra,
+} from './helpers.js';
 
-const cheevoFile = 'cheevos';
-const xboxCheevoFile = 'xboxCheevos';
-const trophyFile = 'trophies';
+const files = ['cheevos', 'xboxCheevos', 'trophies'];
 
 function main(input, options) {
-  let cheevoData = readFiles(cheevoFile, xboxCheevoFile, trophyFile);
+  let cheevoData = readFiles(...files);
   let cheevos = cheevoData.total.cheevos;
 
-  cheevos = filterCheevos(cheevos, input);
+  cheevos = filterCheevos(cheevos, input, options);
 
   if (!cheevos.length) {
     console.log(
@@ -17,9 +20,14 @@ function main(input, options) {
     return;
   }
 
-  console.log(getCheevoInfo(cheevos));
-  if (options.detail) console.log(getCheevoInfoDetail(cheevoData));
-  if (options.extra) console.log('extra');
+  console.log(logCheevos(cheevos));
+
+  if (cheevos.length > 5) {
+    console.log(`Showing ${cheevos.length} results\n`);
+  }
+
+  if (options.detail) console.log(logCheevoDetails(files, cheevoData));
+  if (options.extra) console.log(logCheevoExtra(files, cheevoData));
 }
 
 function readFiles(...files) {
@@ -43,39 +51,46 @@ function readFiles(...files) {
   return cheevoData;
 }
 
-function getCheevoInfo(cheevos) {
-  let cheevoInfo = cheevos.reduce(
-    (acc, cur) => acc + logCheevo(cur) + '\n\n',
-    '\n'
-  );
-  return cheevoInfo.slice(0, -1);
-}
+function filterCheevos(cheevos, input, options) {
+  if (options.rarity) {
+    cheevos = cheevos.filter((x) => x.rarity && x.rarity < options.rarity);
+  }
 
-function getCheevoInfoDetail(cheevoData) {
-  let cheevoInfo = `Total cheevos: ${cheevoData.total.cheevos.length} in ${cheevoData.total.gameCount} games`;
+  if (options.type) {
+    cheevos = cheevos.filter(
+      (x) => x.type && x.type.toUpperCase().includes(options.type.toUpperCase())
+    );
+  }
 
-  if (cheevoData[cheevoFile].cheevos.length)
-    cheevoInfo += `\nSteam: ${cheevoData[cheevoFile].cheevos.length} cheevos in ${cheevoData[cheevoFile].gameCount} games`;
+  if (options.game) {
+    cheevos = cheevos.filter(
+      (x) => x.game && x.game.toUpperCase().includes(options.game.toUpperCase())
+    );
+  }
 
-  if (cheevoData[xboxCheevoFile].cheevos.length)
-    cheevoInfo += `\nXbox: ${cheevoData[xboxCheevoFile].cheevos.length} cheevos in ${cheevoData[xboxCheevoFile].gameCount} games`;
+  if (options.psn) {
+    cheevos = cheevos.filter((x) => x.trophy_id);
+  } else if (options.steam) {
+    cheevos = cheevos.filter((x) => x.cheevo_id);
+  } else if (options.xbox) {
+    cheevos = cheevos.filter((x) => x.xbox_cheevo_id);
+  }
 
-  if (cheevoData[trophyFile].cheevos.length)
-    cheevoInfo += `\nPSN: ${cheevoData[trophyFile].cheevos.length} trophies in ${cheevoData[trophyFile].gameCount} games`;
-
-  return cheevoInfo + `\n`;
-}
-
-function filterCheevos(cheevos, input) {
-  if (input) {
+  if (options.number) {
+    return cheevos.filter((x) => x.count && x.count === options.number);
+  } else if (input) {
     return cheevos.filter(
       (x) =>
         x.title.toUpperCase().includes(input.toUpperCase()) ||
         x.text.toUpperCase().includes(input.toUpperCase())
     );
   }
-  const cheevo = cheevos[Math.floor(Math.random() * cheevos.length)];
-  return cheevos.filter((x) => x.title === cheevo.title);
+
+  if (!options.all) {
+    const cheevo = cheevos[Math.floor(Math.random() * cheevos.length)];
+    cheevos = cheevos.filter((x) => x.title === cheevo.title);
+  }
+  return cheevos;
 }
 
 export default main;
